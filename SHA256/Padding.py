@@ -15,5 +15,3 @@ def padding(message):
     message = (message << 64) | original_len  # adding message's length in 64 bits big int format
     original_len += 64
 
-    return message
-
