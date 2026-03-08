@@ -58,6 +58,8 @@ def sha_256(message):
         Hc[5] = mask(Hc[5] + f)
         Hc[6] = mask(Hc[6] + g)
         Hc[7] = mask(Hc[7] + h)
+        intermediate = b"".join(h.to_bytes(4,'big') for h in Hc)
+        print(f"step: {intermediate}")
 
     digest = b''.join(h.to_bytes(4, 'big') for h in Hc)
     return digest

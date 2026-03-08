@@ -3,6 +3,7 @@ from HMAC.HMAC import hmac
 from HMAC.Xor import xor
 from SHA256.Constants import HASH_LENGTH
 
+
 def pbkdf2(password: bytes, salt: bytes, iterations: int, key_length: int) -> bytes:
     l = math.ceil(key_length / HASH_LENGTH)
     dk = b''
