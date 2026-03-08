@@ -2,7 +2,7 @@ from SHA256.Choose import ch
 from SHA256.Major import maj
 from SHA256.SigmaCompression import small_sigma_0, small_sigma_1, big_sigma_0, big_sigma_1
 from SHA256.Padding import padding
-from SHA256.Constants import H,K
+from SHA256.Constants import H, K
 from SHA256.helpers import mask
 
 
@@ -25,8 +25,8 @@ def sha_256(message):
             shift = (15 - i) * 32
             W[i] = (block >> shift) & 0xFFFFFFFF
 
-        for i in range(16,64):
-            W[i] = mask(small_sigma_1(W[i-2]) + W[i-7] + small_sigma_0(W[i-15]) + W[i-16])
+        for i in range(16, 64):
+            W[i] = mask(small_sigma_1(W[i - 2]) + W[i - 7] + small_sigma_0(W[i - 15]) + W[i - 16])
 
         a = Hc[0]
         b = Hc[1]
@@ -58,10 +58,8 @@ def sha_256(message):
         Hc[5] = mask(Hc[5] + f)
         Hc[6] = mask(Hc[6] + g)
         Hc[7] = mask(Hc[7] + h)
-        intermediate = b"".join(h.to_bytes(4,'big') for h in Hc)
-        print(f"step: {intermediate}")
+        #  intermediate = b"".join(h.to_bytes(4, 'big') for h in Hc)
+        #  print(f"step: {intermediate}")
 
     digest = b''.join(h.to_bytes(4, 'big') for h in Hc)
     return digest
-
-

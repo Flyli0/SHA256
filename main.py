@@ -1,5 +1,4 @@
 from SHA256.SecureHashingAlgorithm import sha_256
-from SHA256.Padding import padding
 from HMAC.HMAC import hmac
 a = "abc"
 a = a.encode("utf-8")
