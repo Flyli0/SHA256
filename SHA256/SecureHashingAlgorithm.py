@@ -6,24 +6,22 @@ from SHA256.Constants import H, K
 from SHA256.helpers import mask
 
 
-def sha_256(message):
-    message = padding(message)
+def sha_256(message):  # OUR SHA256 realization
+    message = padding(message)  # Padding function to make message congruent 512 bits
 
-    blocks = []
-
-    Hc = H.copy()
+    Hc = H.copy()  # Copying Initial value array
     Kc = K.copy()
 
-    for i in range(0, len(message), 64):
+    for i in range(0, len(message), 64):  # Making 512 bit blocks from an entire message (Merkle Damgard construction)
         block = message[i:i + 64]
         W = [0] * 64
         for j in range(16):
-            W[j] = int.from_bytes(block[j * 4:(j + 1) * 4], 'big')
+            W[j] = int.from_bytes(block[j * 4:(j + 1) * 4], 'big')  # such function for words from 0 to 15
 
         for j in range(16, 64):
-            W[j] = mask(small_sigma_1(W[j - 2]) + W[j - 7] + small_sigma_0(W[j - 15]) + W[j - 16])
+            W[j] = mask(small_sigma_1(W[j - 2]) + W[j - 7] + small_sigma_0(W[j - 15]) + W[j - 16])  # further extension
 
-        a = Hc[0]
+        a = Hc[0]  # initializing main working variables
         b = Hc[1]
         c = Hc[2]
         d = Hc[3]
@@ -32,7 +30,7 @@ def sha_256(message):
         g = Hc[6]
         h = Hc[7]
 
-        for t in range(64):
+        for t in range(64):  # main cycle of Compression
             T1 = mask(h + big_sigma_1(e) + ch(e, f, g) + Kc[t] + W[t])
             T2 = mask(big_sigma_0(a) + maj(a, b, c))
             h = g
@@ -56,5 +54,5 @@ def sha_256(message):
         #  intermediate = b"".join(h.to_bytes(4, 'big') for h in Hc)
         #  print(f"step: {intermediate}")
 
-    digest = b''.join(h.to_bytes(4, 'big') for h in Hc)
+    digest = b''.join(h.to_bytes(4, 'big') for h in Hc)  # Final concatenation of the results
     return digest
